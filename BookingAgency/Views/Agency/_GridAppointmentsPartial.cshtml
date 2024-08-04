@@ -1,0 +1,89 @@
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "GridAppointmentsPartial";
+        settings.CallbackRouteValues = new { Controller = "Agency", Action = "GridAppointmentsPartial" };
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.KeyFieldName = "ID";
+
+        settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+        settings.SettingsPager.Visible = true;
+        settings.SettingsPager.FirstPageButton.Visible = true;
+        settings.SettingsPager.LastPageButton.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "250", "500", "750", "1000" };
+        settings.SettingsPager.EnableAdaptivity = true;
+        settings.SettingsPager.PageSize = 20;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.SettingsExport.EnableClientSideExportAPI = true;
+        settings.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+
+        //setting appreance
+        settings.Styles.AlternatingRow.Enabled = DevExpress.Utils.DefaultBoolean.True;
+        settings.Styles.AlternatingRow.BackColor = System.Drawing.Color.MintCream;
+
+        settings.Styles.Cell.Font.Name = "Calibri";
+        settings.Styles.Cell.Font.Size = FontUnit.Parse("12px");
+
+        //menghilangkan insert update delete saat klik kanan dalam grid
+        settings.SettingsDataSecurity.AllowInsert = false;
+        settings.SettingsDataSecurity.AllowEdit = false;
+        settings.SettingsDataSecurity.AllowDelete = false;
+
+        //menampilkan scroll bar horizontal
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.VerticalScrollableHeight = 280;
+
+        //menampilkan context menu jika di klik kanan
+        settings.SettingsContextMenu.Enabled = true;
+
+        //menampilkan column chooser
+        settings.SettingsBehavior.EnableCustomizationWindow = true;
+
+        //allow resize column
+        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+
+        settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+
+        //Add and Setting Column
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Id";
+            column.Caption = "Appointment ID";
+            column.Width = Unit.Pixel(120);
+            column.HeaderStyle.Font.Bold = true;
+            column.CellStyle.Font.Bold = true;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Date";
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.Settings.AutoFilterCondition = AutoFilterCondition.Equals;
+            column.Width = Unit.Pixel(120);
+            column.PropertiesEdit.DisplayFormatString = "dd MMMM yyyy";
+            column.HeaderStyle.Font.Bold = true;
+            column.CellStyle.Font.Bold = true;
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "CustomerName";
+            column.Caption = "Customer Name";
+            column.Width = Unit.Pixel(200);
+        });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Token";
+            column.Width = Unit.Pixel(100);
+        });
+    });
+}
+@grid.Bind(Model).GetHtml()
+
